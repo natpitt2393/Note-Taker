@@ -22,15 +22,14 @@ router.post("/notes", (req, res) => {
 
     dbFile.push(note);
     
-
-    console.log(dbFile)
     fs.writeFile('./db/db.json', JSON.stringify(dbFile), err => {
         if (err) {
             console.log(err);
-        }
-        return res.json(dbFile);
-    })
+        }   
+    });
+    return res.json(dbFile);
 })
+
 
 //delete
 
