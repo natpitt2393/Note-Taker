@@ -1,38 +1,39 @@
 const router = require('express').Router();
 const fs = require('fs');
 const dbFile = require("../db/db.json");
+const { v1: uuidv1 } = require('uuid');
 
 //get notes
 router.get("/notes", (req, res) => {
-    console.log(dbFile);
+    console.log(`${req.method} ${req.url}`);
     return res.json(dbFile);
 });
 
 //post a note
-// listening for someone to post to the url
+
 router.post("/notes", (req, res) => {
+    console.log(`${req.method} ${req.url}`);
+    // create a note object so that an id
+    const note = {
+        title: req.body.title,
+        text: req.body.text,
+        id: uuidv1()
+    };
 
+    dbFile.push(note);
+    
 
-    dbFile.push(req.body);
-    // get the info from the post (req.body)
-     // an object
-    console.log(dbFile) // and array of objects
+    console.log(dbFile)
     fs.writeFile('./db/db.json', JSON.stringify(dbFile), err => {
         if (err) {
             console.log(err);
         }
         return res.json(dbFile);
     })
-
-    // update the json file 
-    // -- update our local variable (dbFile) (add the new obj to the array of obj)
-    // -- overide the json file w/ the updated variable 
-    // -- -- (fsWriteFile)
-
-    // end the response or send back the modified obj
-    // res.end()
 })
 
 //delete
 
 module.exports = router;
+
+
